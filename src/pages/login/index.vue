@@ -4,6 +4,7 @@ import { User, Key, Hide, View } from '@element-plus/icons-vue'
 import logoicon from '@/assets/login_bg.png'
 
 const isShow = ref(false)
+const psdType = ref('password')
 
 const formData = reactive({
   phone: '',
@@ -13,7 +14,8 @@ const formData = reactive({
 
 
 const handleShow = () => {
-  console.log('====')
+  isShow.value = !isShow.value
+  psdType.value = isShow.value ? 'text' : 'password'
 }
 </script>
 
@@ -27,8 +29,14 @@ const handleShow = () => {
             <el-input type="text" v-model="formData.phone" autocomplete="off" maxlength="11" :prefix-icon="User" />
           </el-form-item>
           <el-form-item>
-            <el-input type="password" v-model="formData.psd" autocomplete="off" :prefix-icon="Key">
-              <Icon type="ios-search" slot="suffix" @click="handleShow" />
+            <el-input :type="psdType" v-model="formData.psd" autocomplete="off" :prefix-icon="Key">
+              <!-- !!! -->
+              <template v-slot:suffix>
+                <el-icon @click="handleShow">
+                  <View v-if="isShow" />
+                  <Hide v-else />
+                </el-icon>
+              </template>
             </el-input>
           </el-form-item>
           <div class="code_box">
