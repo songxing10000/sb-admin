@@ -18,7 +18,16 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      '@': join(__dirname, "src"),
+      '@': join(__dirname, "./src"),
     }
-  }
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+
+        additionalData: `@import "@/assets/var.scss";`,
+
+      }
+    }
+  },
 })

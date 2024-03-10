@@ -6,15 +6,17 @@ import type { RouteRecordRaw } from 'vue-router'
 import Login from '@/pages/login/index.vue'
 import Home from '@/pages/home/index.vue'
 
+import { RoutePaths } from '@/router/RoutePaths'
+
 // 定义路由数组
 const routes: RouteRecordRaw[] = [
   {
-    path: "/login",
+    path: RoutePaths.login,
     component: Login,
   },
   {
-    path: "/",
-    alias: ['/home'],
+    path: RoutePaths.root,
+    alias: [RoutePaths.home],
     component: Home,
   },
   // {
@@ -28,4 +30,4 @@ const router = createRouter({
   routes,
 });
 
-export default router;
+export default router
