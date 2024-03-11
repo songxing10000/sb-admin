@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
+import type { FormInstance } from 'element-plus'
 import { User, Key, Hide, View } from '@element-plus/icons-vue'
 import logoicon from '@/assets/login_bg.png'
+import { validateHeaderValue } from 'http';
 
 const isShow = ref(false)
 const psdType = ref('password')
+const ruleFormRef = ref<FormInstance>()
 
 const formData = reactive({
   phone: '',
@@ -12,10 +15,25 @@ const formData = reactive({
   code: '',
 })
 
-
 const handleShow = () => {
   isShow.value = !isShow.value
   psdType.value = isShow.value ? 'text' : 'password'
+}
+ 
+const submitForm = (formEl: FormInstance | undefined) => {
+
+  if (!formEl) return
+
+  formEl.validate((valid) => {
+    debugger
+    if (valid) {
+      console.log(formData)
+    } else {
+      console.log('error submit!')
+      return false
+    }
+  })
+
 }
 </script>
 
@@ -25,7 +43,10 @@ const handleShow = () => {
       <div class="login_content">
         <h1 class="login_title">机组疲劳实时监测和预警系统</h1>
         <el-form ref="ruleFormRef" :model="formData" class="login_form">
-          <el-form-item>
+          <el-form-item :rules="[
+          { required: true, message: 'qing ' },
+          { type: 'number', message: 'age must be a number' },
+        ]">
             <el-input type="text" v-model="formData.phone" autocomplete="off" maxlength="11" :prefix-icon="User" />
           </el-form-item>
           <el-form-item>
@@ -45,9 +66,9 @@ const handleShow = () => {
             </el-form-item>
             <img class="code_icon" :src="logoicon" alt="">
           </div>
-          <el-form-item>
-            <el-button type="primary">登录</el-button>
-          </el-form-item>
+          <div class="btns">
+            <el-button type="primary" @click="submitForm(ruleFormRef)">登录</el-button>
+          </div>
         </el-form>
       </div>
     </div>
@@ -87,7 +108,6 @@ const handleShow = () => {
     }
 
     .login_form {
-
       .code_box {
         display: flex;
         align-items: center;
@@ -103,6 +123,14 @@ const handleShow = () => {
         margin-left: 16px;
         width: 100px;
         height: 32px;
+      }
+
+      .btns {
+        padding: 0 32px;
+
+        .el-button {
+          width: 100%;
+        }
       }
     }
   }
